@@ -1,0 +1,10 @@
+.custom-footer{
+    background-color: rgba(0, 0, 0, 0.05);
+}
+svg#clouds {
+    position: fixed;
+    bottom: -160px;
+    left: -230px;
+    z-index: -10;
+    width: 1920px;
+  }

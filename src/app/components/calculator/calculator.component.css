@@ -1,0 +1,11 @@
+.payment-panel {
+    margin-top: 6rem;
+}
+
+.payment-panel label {
+    font-weight: bold;
+}
+
+.payment-panel .form-group {
+    margin-bottom: 1rem;
+}

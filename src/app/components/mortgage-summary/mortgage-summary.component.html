@@ -1,0 +1,26 @@
+<div class="container mt-5" id="mortgage-summary">
+    <h4>Mortgage Summary</h4>
+    <p>Over the {{amSummary.amonitizationYears}}-year amortization period, you will:</p>
+    <ul>
+        <li>have made <b>{{amSummary.numberOfPayment}} </b>{{paymentFrequency}} payments of
+            <b>{{amSummary.mortgagePayment |
+                currency}}</b></li>
+        <li> have paid <b>{{amSummary.principalPayment | currency}}</b> in principal, <b>{{amSummary.interestPayment |
+                currency}}</b> in
+            interest, for a total of <b>{{amSummary.totalAmountPaid | currency}}</b></li>
+    </ul>
+    <p> Over the {{termSummary.termYears}}-year term, you will:</p>
+    <ul>
+        <li>have made <b>{{termSummary.numberOfPayment}}</b> {{paymentFrequency}} payments of
+            <b>{{termSummary.mortgagePayment |
+                currency}}</b></li>
+        <li> have paid <b>{{termSummary.principalPayment | currency}}</b> in principal, <b>{{termSummary.interestPayment
+                | currency}}</b> in interest, for a
+            total of <b>{{termSummary.totalAmountPaid | currency}}</b></li>
+    </ul>
+
+    <p> At the end of your {{termSummary.termYears}}-year term, you will:</p>
+    <ul>
+        <li> have a balance of <b>{{(amSummary.totalAmountPaid - termSummary.totalAmountPaid) | currency}}</b></li>
+    </ul>
+</div>

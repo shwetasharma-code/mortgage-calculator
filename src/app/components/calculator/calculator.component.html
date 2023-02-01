@@ -1,0 +1,102 @@
+<div class="container payment-panel">
+    <div class="row">
+        <p>This calculator determines your mortgage payment and provides you with a mortgage payment schedule.<br>
+            <b>Note:</b> As of July 9, 2012, the maximum amortization period for mortgages with less than a 20 percent down payment is 25 years.
+        </p>
+    </div>
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <div class="card m-3">
+                <div class="card-header bg-c">
+                    <h4>Payment Plan</h4>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="paymentForm" (ngSubmit)="calculate()">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Mortgage Amount:</label>
+                            <div class="col-md-9">
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input type="number" class="form-control" id="mortgage-amount"
+                                        formControlName="mortgageAmount" />
+                                </div>
+                                <div class="error">
+                                    <span *ngIf="isSubmitted && paymentForm.get('mortgageAmount')?.invalid">
+                                        Please enter an amount greater than 0. </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Interest Rate:</label>
+                            <div class="col-md-9">
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="interest-rate"
+                                        formControlName="interestRate" />
+                                    <span class="input-group-text">%</span>
+                                </div>
+                                <div class="error">
+                                    <span *ngIf="isSubmitted && paymentForm.get('interestRate')?.invalid">
+                                        Please enter a percent greater than 0 and less than 100.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Amortization Period:</label>
+                            <div class="col-md-9">
+                                <select class="form-select" id="am-period" formControlName="amortizationPeriod">
+                                    <option *ngFor="let ap of amortizationYears$ | async" value="{{ap.value}}">
+                                        {{ap.label}}
+                                        Years
+                                    </option>
+                                </select>
+                                <div class="error">
+                                    <span *ngIf="isSubmitted && paymentForm.get('amortizationPeriod')?.invalid">
+                                        Please select a valid 'Amortization Period'.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Payment Frequency:</label>
+                            <div class="col-md-9">
+                                <select class="form-select" id="payment-frequency" formControlName="paymentFrequency">
+                                    <option *ngFor="let pf of paymentFrequencies$ | async" value="{{pf.value}}">
+                                        {{pf.label}}
+                                    </option>
+                                </select>
+                                <div class="error">
+                                    <span *ngIf="isSubmitted && paymentForm.get('paymentFrequency')?.invalid">
+                                        Please select a valid 'Payment Frequency'.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Term:</label>
+                            <div class="col-md-9">
+                                <select class="form-select" id="term" formControlName="term">
+                                    <option *ngFor="let term of termYears$ | async" value="{{term.value}}">
+                                        {{term.label}}
+                                        Years</option>
+                                </select>
+                                <div class="error">
+                                    <span *ngIf="isSubmitted && paymentForm.get('term')?.invalid">
+                                        Please select a valid 'Term'.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn bg-c" id="btn-calculate">Calculate</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="summary-panel">
+        <app-calculation-summary *ngIf="isCalculated$ | async"></app-calculation-summary>
+        <app-mortgage-summary *ngIf="isCalculated$ | async"></app-mortgage-summary>
+    </div>
+
+</div>
