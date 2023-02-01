@@ -1,6 +1,7 @@
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 export class SelectItem {
     label!: string;
-    value!: string | number;
+    value!: any;
     /**
      *
      */

@@ -10,7 +10,7 @@ export interface MState {
     amortizationDetails: CalcSummary,
     termDetails: CalcSummary,
     isCalculated: boolean
-};
+}
 
 const initialState: MState = {
     amortizationYears: [],

@@ -12,7 +12,6 @@ describe('CalculationSummaryComponent', () => {
   let fixture: ComponentFixture<CalculationSummaryComponent>;
 
   const initialState: MState = initialMockState;
-  let store: MockStore;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -32,7 +31,7 @@ describe('CalculationSummaryComponent', () => {
 
     fixture = TestBed.createComponent(CalculationSummaryComponent);
     component = fixture.componentInstance;
-    store = TestBed.inject(MockStore);
+    TestBed.inject(MockStore);
     fixture.detectChanges();
   });
 

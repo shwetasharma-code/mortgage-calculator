@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { CalcSummary } from '../../models/calc-summary.model';
 import { selectMortgageState } from '../../state/mortgage.selectors';
@@ -8,7 +8,7 @@ import { selectMortgageState } from '../../state/mortgage.selectors';
   templateUrl: './calculation-summary.component.html',
   styleUrls: ['./calculation-summary.component.css']
 })
-export class CalculationSummaryComponent {
+export class CalculationSummaryComponent implements OnInit {
   amSummary!: CalcSummary;
   termSummary!: CalcSummary;
 

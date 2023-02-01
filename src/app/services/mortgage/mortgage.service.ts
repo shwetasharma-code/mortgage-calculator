@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { CalcSummary } from '../../models/calc-summary.model';
 import { ICalculator } from '../../models/calculator.model';
 import { SelectItem } from '../../models/select-item.model';
@@ -8,9 +8,7 @@ import { SelectItem } from '../../models/select-item.model';
   providedIn: 'root'
 })
 export class MortgageService {
-
-  constructor() { }
-
+ 
   /**
    * Calculate the mortgage payment summary 
    *
@@ -43,7 +41,7 @@ export class MortgageService {
    * @return {*}  {CalcSummary}
    * @memberof MortgageService
    */
-  calculatePlan(mortgageAmount: any, period: any, interestRate: any, paymentFrequency: string): CalcSummary {
+  calculatePlan(mortgageAmount: number, period: number, interestRate: number, paymentFrequency: string): CalcSummary {
     const principalAmount = Number(mortgageAmount);
     const totalYears = Number(period);
     const rateOfInterest = Number(interestRate) / 100;
@@ -76,7 +74,7 @@ export class MortgageService {
    * @return {*}  {CalcSummary}
    * @memberof MortgageService
    */
-  calculateTermPlan(mortgagePayment: any, period: any, interestRate: any, paymentFrequency: string): CalcSummary {
+  calculateTermPlan(mortgagePayment: number, period: number, interestRate: number, paymentFrequency: string): CalcSummary {
     const monthlyPayment = Number(mortgagePayment);
     const totalYears = Number(period);
     const rateOfInterest = Number(interestRate) / 100;
@@ -134,7 +132,7 @@ export class MortgageService {
     return new Observable<SelectItem[]>(observer => {
       const years = [new SelectItem({ label: 'Select', value: '' })];
       for (let i = 0; i < 30; i++) {
-        let year = i + 1;
+        const year = i + 1;
         years.push(new SelectItem({ label: year, value: year }));
       }
       observer.next(years);
@@ -151,7 +149,7 @@ export class MortgageService {
     return new Observable<SelectItem[]>(observer => {
       const years = [new SelectItem({ label: 'Select', value: '' })];
       for (let i = 0; i < 10; i++) {
-        let year = i + 1;
+        const year = i + 1;
         years.push(new SelectItem({ label: year, value: year }));
       }
       observer.next(years);

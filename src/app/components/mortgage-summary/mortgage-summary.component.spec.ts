@@ -11,7 +11,6 @@ describe('MortgageSummaryComponent', () => {
   let component: MortgageSummaryComponent;
   let fixture: ComponentFixture<MortgageSummaryComponent>;
   const initialState: MState = initialMockState;
-  let store: MockStore;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -30,7 +29,7 @@ describe('MortgageSummaryComponent', () => {
 
     fixture = TestBed.createComponent(MortgageSummaryComponent);
     component = fixture.componentInstance;
-    store = TestBed.inject(MockStore);
+    TestBed.inject(MockStore);
     fixture.detectChanges();
   });
 

@@ -1,7 +1,7 @@
 export interface ICalculator {
     mortgageAmount: number;
-    interestRate: Number,
-    amortizationPeriod: Number,
+    interestRate: number,
+    amortizationPeriod: number,
     paymentFrequency: string,
     term: number;
 } 
