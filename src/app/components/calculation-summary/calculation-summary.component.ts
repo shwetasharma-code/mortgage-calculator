@@ -22,7 +22,7 @@ export class CalculationSummaryComponent implements OnInit, OnDestroy {
       this.termSummary = s.termDetails;
       if (s.isCalculated) {
         // TODO: scroll directive could be implemented
-        document.getElementById('summary-panel')?.scrollIntoView(false);
+        document.getElementById('summary-panel')?.scrollIntoView(true);
       }
     }));
   }

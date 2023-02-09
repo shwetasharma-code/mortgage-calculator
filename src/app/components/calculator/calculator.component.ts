@@ -45,6 +45,12 @@ export class CalculatorComponent implements OnInit, OnDestroy {
     }, { validators: this.yearValidator() });
   }
 
+  /**
+   * custom validation to check if the number is zero or negative
+   *
+   * @return {*}  {ValidatorFn}
+   * @memberof CalculatorComponent
+   */
   noZeroOrNegative(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const forbidden = control.value === 0 || control.value < 0 ? true : false;
@@ -52,6 +58,12 @@ export class CalculatorComponent implements OnInit, OnDestroy {
     };
   }
 
+  /**
+   * custom validation for amortization year to be greater than term year
+   *
+   * @return {*}  {ValidatorFn}
+   * @memberof CalculatorComponent
+   */
   yearValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const amYear = control.get('amortizationPeriod');
