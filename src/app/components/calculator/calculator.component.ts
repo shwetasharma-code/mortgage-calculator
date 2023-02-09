@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
 import { ICalculator } from '../../models/calculator.model';
 import { calculateSummary, clearSummary, getAmortizationPeriod, getPaymentFrequency, getTerm } from '../../state/mortgage.actions';
 import { isCalculated, selectAmortizationYears, selectPaymentFrequency, selectTermYears } from '../../state/mortgage.selectors';
@@ -9,7 +10,7 @@ import { isCalculated, selectAmortizationYears, selectPaymentFrequency, selectTe
   templateUrl: './calculator.component.html',
   styleUrls: ['./calculator.component.css']
 })
-export class CalculatorComponent implements OnInit {
+export class CalculatorComponent implements OnInit, OnDestroy {
   paymentForm!: FormGroup;
   isSubmitted = false;
 
@@ -18,14 +19,15 @@ export class CalculatorComponent implements OnInit {
   paymentFrequencies$ = this.store.select(selectPaymentFrequency);
   isCalculated$ = this.store.select(isCalculated);
 
+  subscriptions = new Subscription();
   constructor(private fb: FormBuilder, private store: Store) {
     this.initForm();
   }
 
   ngOnInit() {
-    this.store.dispatch(getAmortizationPeriod());
-    this.store.dispatch(getTerm());
-    this.store.dispatch(getPaymentFrequency());
+    this.subscriptions.add(this.store.dispatch(getAmortizationPeriod()));
+    this.subscriptions.add(this.store.dispatch(getTerm()));
+    this.subscriptions.add(this.store.dispatch(getPaymentFrequency()));
   }
 
   /**
@@ -35,18 +37,36 @@ export class CalculatorComponent implements OnInit {
    */
   initForm() {
     this.paymentForm = this.fb.group({
-      mortgageAmount: ['', [Validators.required]],
-      interestRate: ['', [Validators.required, Validators.min(0.01), Validators.max(100)]],
+      mortgageAmount: [null, [Validators.required, this.noZeroOrNegative()]],
+      interestRate: [null, [Validators.required, this.noZeroOrNegative(), Validators.max(100)]],
       amortizationPeriod: ['', [Validators.required]],
       paymentFrequency: ['', [Validators.required]],
       term: ['', [Validators.required]]
-    });
+    }, { validators: this.yearValidator() });
   }
+
+  noZeroOrNegative(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const forbidden = control.value === 0 || control.value < 0 ? true : false;
+      return forbidden ? { zeroOrNegative: { value: control.value } } : null;
+    };
+  }
+
+  yearValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const amYear = control.get('amortizationPeriod');
+      const termYear = control.get('term');
+      const forbidden = amYear && termYear && amYear.value && termYear.value &&
+        Number(amYear.value) < Number(termYear.value) ? true : false;
+      return forbidden ? { forbiddenYear: true } : null;
+    };
+  }
+
 
   /**
    * @description This method dispatch the action to calculate the mortgage payment if form valid 
    * and reset the summary if invalid.
-   * Formula: 
+   * Formula:
    * let monthlyPayment = ((interestRate / 12) / (1 - (Math.Pow((1 + (interestRate / 12)), -(amortizationTerm))))) * loanAmount;
    * monthlyPayment = Math.Round(monthlyPayment, 2);
    * @memberof CalculatorComponent
@@ -69,4 +89,7 @@ export class CalculatorComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
 }
