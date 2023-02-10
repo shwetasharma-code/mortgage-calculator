@@ -1,7 +1,8 @@
 <div class="container payment-panel">
     <div class="row">
         <p>This calculator determines your mortgage payment and provides you with a mortgage payment schedule.<br>
-            <b>Note:</b> As of July 9, 2012, the maximum amortization period for mortgages with less than a 20 percent down payment is 25 years.
+            <b>Note:</b> As of July 9, 2012, the maximum amortization period for mortgages with less than a 20 percent
+            down payment is 25 years.
         </p>
     </div>
     <div class="row">
@@ -54,6 +55,11 @@
                                 <div class="error">
                                     <span *ngIf="isSubmitted && paymentForm.get('amortizationPeriod')?.invalid">
                                         Please select a valid 'Amortization Period'.
+                                    </span>
+                                </div>
+                                <div class="error">
+                                    <span *ngIf="isSubmitted && paymentForm.errors?.['forbiddenYear']">
+                                        The amortization period must be equal to or greater than the term.
                                     </span>
                                 </div>
                             </div>

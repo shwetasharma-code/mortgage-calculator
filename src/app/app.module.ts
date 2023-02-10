@@ -1,8 +1,11 @@
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CalculationSummaryComponent } from './components/calculation-summary/calculation-summary.component';
@@ -13,6 +16,9 @@ import { MortgageEffects } from './state/mortgage.effects';
 import { mortgageReducer } from './state/mortgage.reducer';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,7 +33,15 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
     AppRoutingModule,
     ReactiveFormsModule,
     StoreModule.forRoot({ summary: mortgageReducer }),
-    EffectsModule.forRoot([MortgageEffects])
+    EffectsModule.forRoot([MortgageEffects]),
+    HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

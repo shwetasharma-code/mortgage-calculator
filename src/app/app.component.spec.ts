@@ -1,10 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { TranslateService } from '@ngx-translate/core';
 import { AppComponent } from './app.component';
 import { FooterComponent } from './footer/footer.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 
 describe('AppComponent', () => {
+
+  const mockService = jasmine.createSpyObj('mockService', {
+    'setDefaultLang': 'en',
+    'use': 'en'
+  });
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
@@ -13,6 +19,7 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent, ToolbarComponent, FooterComponent
       ],
+      providers: [{ provide: TranslateService, useValue: mockService }]
     }).compileComponents();
   });
 
